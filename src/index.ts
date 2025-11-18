@@ -33,7 +33,7 @@ app.get("/", (__: Request, res: Response) => {
 })
 
 app.use("/auth", limiter, authRouter)
-app.use("/products", productRouter)
+app.use("/products", authMiddleware, productRouter)
 
 // endpoint para el 404 - no se encuentra el recurso
 app.use((__, res) => {
