@@ -8,7 +8,9 @@
     "strict": true, // Activa las validaciones más importantes
     "noImplicitAny": true, // No permite variables sin tipo
     "noUnusedLocals": true, // Detecta variables locales sin usar
-    "resolveJsonModule": true // Permite importar archivos .json
+    "resolveJsonModule": true, // Permite importar archivos .json
+    "moduleResolution": "node",    // Muy importante para importar librerías CommonJS como 'express-rate-limit'
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"
