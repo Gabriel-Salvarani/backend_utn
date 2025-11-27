@@ -4,11 +4,9 @@ import cors from "cors"
 import connectDB from "./config/mongodb"
 import productRouter from "./routes/productRoutes"
 import authRouter from "./routes/authRouter"
-import limiter from "./middleware/rateLimitMiddleware"
 import morgan from "morgan"
 import IUserTokenPayload from "./interfaces/IUserTokenPayload"
 import dotenv from "dotenv"
-import authMiddleware from "./middleware/authMiddleware"
 dotenv.config()
 
 declare global {
