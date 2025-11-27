@@ -8,6 +8,9 @@ dotenv.config()
 const SECRET_KEY = process.env.JWT_SECRET!
 
 class AuthController {
+  // http://localhost:3000/auth/register
+  // method: POST
+  // body: {"email": "gabi@gmail.com", "password": pepe123}
   static register = async (req: Request, res: Response): Promise<void | Response> => {
     try {
       const { email, password } = req.body
@@ -16,12 +19,18 @@ class AuthController {
         return res.status(400).json({ success: false, error: "Datos invalidos" })
       }
 
+      const user = await User.findOne({ email })
+
+      if (user) {
+        return res.status(409).json({ success: false, error: "El usuario ya existe en la base de datos." })
+      }
+
       // crear el hash de la contraseña
       const hash = await bcrypt.hash(password, 10)
       const newUser = new User({ email, password: hash })
 
       await newUser.save()
-      res.json({ success: true, data: newUser })
+      res.status(201).json({ success: true, data: newUser })
     } catch (e) {
       const error = e as Error
       switch (error.name) {
@@ -52,7 +61,7 @@ class AuthController {
         return res.status(401).json({ success: false, error: "No autorizado" })
       }
 
-      const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "1h" })
+      const token = jwt.sign({ id: user._id, email: user.email }, SECRET_KEY, { expiresIn: "1h" })
       res.json({ success: true, token })
     } catch (e) {
       const error = e as Error
